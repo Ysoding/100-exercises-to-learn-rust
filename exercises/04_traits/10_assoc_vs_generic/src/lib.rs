@@ -1,3 +1,5 @@
+use std::process::Output;
+
 // TODO: Define a new trait, `Power`, that has a method `power` that raises `self`
 //  to the power of `n`.
 //  The trait definition and its implementations should be enough to get
@@ -12,6 +14,33 @@
 // interested in learning more about it.
 // You don't have to though: it's perfectly okay to write three separate
 // implementations manually. Venture further only if you're curious.
+trait Power<RHS> {
+    type Output;
+    fn power(self, n: RHS) -> Self::Output;
+}
+
+impl Power<u16> for u32 {
+    type Output = u32;
+
+    fn power(self, n: u16) -> Self::Output {
+        self.pow(n as u32)
+    }
+}
+impl Power<u32> for u32 {
+    type Output = u32;
+
+    fn power(self, n: u32) -> Self::Output {
+        self.pow(n)
+    }
+}
+
+impl Power<&u32> for u32 {
+    type Output = u32;
+
+    fn power(self, n: &u32) -> u32 {
+        self.pow(*n)
+    }
+}
 
 #[cfg(test)]
 mod tests {
