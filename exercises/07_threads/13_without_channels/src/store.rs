@@ -1,5 +1,4 @@
 use std::collections::BTreeMap;
-use std::sync::{Arc, RwLock};
 
 use crate::data::{Status, Ticket, TicketDraft};
 
@@ -8,7 +7,7 @@ pub struct TicketId(u64);
 
 #[derive(Clone)]
 pub struct TicketStore {
-    tickets: BTreeMap<TicketId, Arc<RwLock<Ticket>>>,
+    tickets: BTreeMap<TicketId, Ticket>,
     counter: u64,
 }
 
@@ -29,12 +28,11 @@ impl TicketStore {
             description: ticket.description,
             status: Status::ToDo,
         };
-        let ticket = Arc::new(RwLock::new(ticket));
         self.tickets.insert(id, ticket);
         id
     }
 
-    pub fn get(&self, id: TicketId) -> Option<Arc<RwLock<Ticket>>> {
+    pub fn get(&self, id: TicketId) -> Option<Ticket> {
         self.tickets.get(&id).cloned()
     }
 }
